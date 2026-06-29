@@ -372,6 +372,14 @@ function renderDetail(){
 }
 renderList();renderDetail();
 </script>
+<script>
+(function(){
+function report(){var on=document.querySelector('nav.tabs button.on');try{parent.postMessage({__sub:on?parseInt(on.dataset.p,10):0},'*');}catch(e){}}
+document.addEventListener('click',function(){setTimeout(report,0);});
+window.addEventListener('message',function(e){var d=e.data;if(d&amp;&amp;d.__setSub!=null){var btn=document.querySelector('nav.tabs button[data-p=&quot;'+d.__setSub+'&quot;]');if(btn)btn.click();}});
+setTimeout(report,40);
+})();
+</script>
 </body>
 </html>
 " title="자사주 매입"></iframe><iframe class="docframe" srcdoc="<!DOCTYPE html>
@@ -702,6 +710,14 @@ function renderDetail(){
 }
 renderList();renderDetail();
 </script>
+<script>
+(function(){
+function report(){var on=document.querySelector('nav.tabs button.on');try{parent.postMessage({__sub:on?parseInt(on.dataset.p,10):0},'*');}catch(e){}}
+document.addEventListener('click',function(){setTimeout(report,0);});
+window.addEventListener('message',function(e){var d=e.data;if(d&amp;&amp;d.__setSub!=null){var btn=document.querySelector('nav.tabs button[data-p=&quot;'+d.__setSub+'&quot;]');if(btn)btn.click();}});
+setTimeout(report,40);
+})();
+</script>
 </body>
 </html>
 " title="인수합병"></iframe><iframe class="docframe" srcdoc="<!DOCTYPE html>
@@ -1025,6 +1041,14 @@ function renderDetail(){
 }
 renderList();renderDetail();
 </script>
+<script>
+(function(){
+function report(){var on=document.querySelector('nav.tabs button.on');try{parent.postMessage({__sub:on?parseInt(on.dataset.p,10):0},'*');}catch(e){}}
+document.addEventListener('click',function(){setTimeout(report,0);});
+window.addEventListener('message',function(e){var d=e.data;if(d&amp;&amp;d.__setSub!=null){var btn=document.querySelector('nav.tabs button[data-p=&quot;'+d.__setSub+'&quot;]');if(btn)btn.click();}});
+setTimeout(report,40);
+})();
+</script>
 </body>
 </html>
 " title="부채"></iframe><iframe class="docframe" srcdoc="<!DOCTYPE html>
@@ -1331,11 +1355,23 @@ function renderDetail(){
 }
 renderList();renderDetail();
 </script>
+<script>
+(function(){
+function report(){var on=document.querySelector('nav.tabs button.on');try{parent.postMessage({__sub:on?parseInt(on.dataset.p,10):0},'*');}catch(e){}}
+document.addEventListener('click',function(){setTimeout(report,0);});
+window.addEventListener('message',function(e){var d=e.data;if(d&amp;&amp;d.__setSub!=null){var btn=document.querySelector('nav.tabs button[data-p=&quot;'+d.__setSub+'&quot;]');if(btn)btn.click();}});
+setTimeout(report,40);
+})();
+</script>
 </body>
 </html>
 " title="부동산·시설"></iframe>
 <script>
-const btns=[...document.querySelectorAll('.topbar button')];const frames=[...document.querySelectorAll('.docframe')];btns.forEach(b=>b.onclick=()=>{const i=+b.dataset.i;btns.forEach((x,j)=>x.classList.toggle('on',j===i));frames.forEach((f,j)=>f.classList.toggle('on',j===i));});
+let lastSub=0;
+const btns=[...document.querySelectorAll('.topbar button')];
+const frames=[...document.querySelectorAll('.docframe')];
+window.addEventListener('message',function(e){var d=e.data;if(d&&typeof d.__sub==='number')lastSub=d.__sub;});
+btns.forEach(b=>b.onclick=()=>{const i=+b.dataset.i;btns.forEach((x,j)=>x.classList.toggle('on',j===i));frames.forEach((f,j)=>f.classList.toggle('on',j===i));try{frames[i].contentWindow.postMessage({__setSub:lastSub},'*');}catch(e){}});
 </script>
 </body>
 </html>
