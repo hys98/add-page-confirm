@@ -477,14 +477,15 @@ ul.clean{margin:8px 0;padding-left:20px;}ul.clean li{font-size:14.5px;color:var(
 .src{font-size:11.5px;color:var(--tt);margin-top:12px;}
 .empty{border-left:3px solid #3B6D11;background:#EAF3DE55;border-radius:0 var(--rmd) var(--rmd) 0;padding:12px 14px;margin:10px 0;}
 .empty .echip{display:inline-block;background:#EAF3DE;color:#3B6D11;font-size:11px;padding:1px 8px;border-radius:var(--rmd);margin-right:6px;font-weight:600;}
-.trendbox{border:0.5px solid var(--bd3);border-radius:var(--rmd);padding:10px 12px;margin:10px 0;}
-.trendt{font-size:12.5px;color:var(--ts);margin-bottom:6px;}
-.tbar-row{display:flex;align-items:center;gap:10px;margin:4px 0;}
-.tbar-y{font-size:11.5px;color:var(--tt);width:42px;flex:none;font-variant-numeric:tabular-nums;}
-.tbar-wrap{flex:1;background:var(--bs);border-radius:4px;height:16px;overflow:hidden;}
-.tbar{height:100%;background:#5B8BC9;border-radius:4px;min-width:2px;}
-.tbar.zero{background:#D8D6CE;}
-.tbar-v{font-size:11.5px;color:var(--ts);width:104px;flex:none;text-align:right;font-variant-numeric:tabular-nums;}
+.xtrend{border:0.5px solid var(--bd3);border-radius:var(--rmd);padding:10px 12px;margin:10px 0;}
+.xt-title{font-size:12.5px;color:var(--ts);margin-bottom:10px;}
+.xt-bars{display:flex;align-items:flex-end;gap:14px;height:88px;}
+.xt-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;}
+.xt-val{font-size:10px;color:var(--ts);margin-bottom:3px;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.xt-bar{width:70%;max-width:42px;background:#5B8BC9;border-radius:3px 3px 0 0;min-height:2px;}
+.xt-bar.zero{background:#D8D6CE;}
+.xt-axis{display:flex;gap:14px;margin-top:5px;}
+.xt-ycell{flex:1;text-align:center;font-size:11px;color:var(--tt);font-variant-numeric:tabular-nums;}
 .empty .et{font-weight:600;font-size:13.5px;color:var(--tp);}
 .empty .eq{font-size:12px;color:var(--ts);margin-top:4px;font-family:var(--serif);}
 .scl{font-size:10px;color:var(--tt);margin-left:2px;}
@@ -700,11 +701,12 @@ function dealCard(a){
 }
 
 function acqTrend(recs){
- const pts=[...recs].reverse().map(r=>({y:r.fy.slice(0,4),v:(r.ds==='specific_acquisitions_disclosed'?(r.A||[]).length:0)}));
+ const pts=recs.map(r=>({y:r.fy.slice(0,4),v:(r.ds==='specific_acquisitions_disclosed'?(r.A||[]).length:0)}));
  if(pts.every(p=>p.v===0))return '';
  const max=Math.max(1,...pts.map(p=>p.v));
- const bars=pts.map(p=>{const w=p.v?Math.max(2,Math.round(p.v/max*100)):0;return `<div class=&quot;tbar-row&quot;><div class=&quot;tbar-y&quot;>${p.y}</div><div class=&quot;tbar-wrap&quot;><div class=&quot;tbar ${p.v?'':'zero'}&quot; style=&quot;width:${w}%&quot;></div></div><div class=&quot;tbar-v&quot;>${p.v}건</div></div>`;}).join('');
- return `<div class=&quot;trendbox&quot;><div class=&quot;trendt&quot;>연도별 인수 건수</div>${bars}</div>`;
+ const cols=pts.map(p=>{const hgt=p.v?Math.max(2,Math.round(p.v/max*70)):2;return `<div class=&quot;xt-col&quot;><div class=&quot;xt-val&quot;>${p.v}건</div><div class=&quot;xt-bar ${p.v?'':'zero'}&quot; style=&quot;height:${hgt}px&quot;></div></div>`;}).join('');
+ const ax=pts.map(p=>`<div class=&quot;xt-ycell&quot;>${p.y}</div>`).join('');
+ return `<div class=&quot;xtrend&quot;><div class=&quot;xt-title&quot;>연도별 인수 건수</div><div class=&quot;xt-bars&quot;>${cols}</div><div class=&quot;xt-axis&quot;>${ax}</div></div>`;
 }
 function renderDetail(){
  const recs=ACQ.filter(r=>r.tk===SEL).sort((a,b)=>a.fy.localeCompare(b.fy));
@@ -831,14 +833,15 @@ ul.clean{margin:8px 0;padding-left:20px;}ul.clean li{font-size:14.5px;color:var(
 .src{font-size:11.5px;color:var(--tt);}
 .empty{border-left:3px solid #3B6D11;background:#EAF3DE55;border-radius:0 var(--rmd) var(--rmd) 0;padding:12px 14px;margin:10px 0;}
 .empty .echip{display:inline-block;background:#EAF3DE;color:#3B6D11;font-size:11px;padding:1px 8px;border-radius:var(--rmd);margin-right:6px;font-weight:600;}
-.trendbox{border:0.5px solid var(--bd3);border-radius:var(--rmd);padding:10px 12px;margin:10px 0;}
-.trendt{font-size:12.5px;color:var(--ts);margin-bottom:6px;}
-.tbar-row{display:flex;align-items:center;gap:10px;margin:4px 0;}
-.tbar-y{font-size:11.5px;color:var(--tt);width:42px;flex:none;font-variant-numeric:tabular-nums;}
-.tbar-wrap{flex:1;background:var(--bs);border-radius:4px;height:16px;overflow:hidden;}
-.tbar{height:100%;background:#5B8BC9;border-radius:4px;min-width:2px;}
-.tbar.zero{background:#D8D6CE;}
-.tbar-v{font-size:11.5px;color:var(--ts);width:104px;flex:none;text-align:right;font-variant-numeric:tabular-nums;}
+.xtrend{border:0.5px solid var(--bd3);border-radius:var(--rmd);padding:10px 12px;margin:10px 0;}
+.xt-title{font-size:12.5px;color:var(--ts);margin-bottom:10px;}
+.xt-bars{display:flex;align-items:flex-end;gap:14px;height:88px;}
+.xt-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;}
+.xt-val{font-size:10px;color:var(--ts);margin-bottom:3px;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.xt-bar{width:70%;max-width:42px;background:#5B8BC9;border-radius:3px 3px 0 0;min-height:2px;}
+.xt-bar.zero{background:#D8D6CE;}
+.xt-axis{display:flex;gap:14px;margin-top:5px;}
+.xt-ycell{flex:1;text-align:center;font-size:11px;color:var(--tt);font-variant-numeric:tabular-nums;}
 .empty .et{font-weight:600;font-size:13.5px;color:var(--tp);}
 .empty .eq{font-size:12px;color:var(--ts);margin-top:4px;font-family:var(--serif);}
 .scl{font-size:10px;color:var(--tt);}
@@ -1054,11 +1057,12 @@ function instrTables(rec){
  return html;
 }
 function debtTrend(recs){
- const pts=[...recs].reverse().map(r=>{const t=(r.T||[]).find(x=>x.cl==='total');let cur=null;if(t){const cp=curPrior(t.ap);if(cp.cur&amp;&amp;cp.cur[1]!=null)cur=cp.cur;}return {y:r.fy.slice(0,4),cur:cur};});
+ const pts=recs.map(r=>{const t=(r.T||[]).find(x=>x.cl==='total');let cur=null;if(t){const cp=curPrior(t.ap);if(cp.cur&amp;&amp;cp.cur[1]!=null)cur=cp.cur;}return {y:r.fy.slice(0,4),cur:cur};});
  if(pts.every(p=>!p.cur))return '';
  const max=Math.max(1,...pts.map(p=>p.cur?p.cur[1]:0));
- const bars=pts.map(p=>{const w=p.cur?Math.max(2,Math.round(p.cur[1]/max*100)):0;const lab=p.cur?money(p.cur):'미공시';return `<div class=&quot;tbar-row&quot;><div class=&quot;tbar-y&quot;>${p.y}</div><div class=&quot;tbar-wrap&quot;><div class=&quot;tbar ${p.cur?'':'zero'}&quot; style=&quot;width:${w}%&quot;></div></div><div class=&quot;tbar-v&quot;>${lab}</div></div>`;}).join('');
- return `<div class=&quot;trendbox&quot;><div class=&quot;trendt&quot;>연도별 총 부채 <span class=&quot;scl&quot;>· 공시 '총 부채(total)' 기준</span></div>${bars}</div>`;
+ const cols=pts.map(p=>{const hgt=p.cur?Math.max(2,Math.round(p.cur[1]/max*70)):2;const lab=p.cur?money(p.cur):'미공시';return `<div class=&quot;xt-col&quot;><div class=&quot;xt-val&quot;>${lab}</div><div class=&quot;xt-bar ${p.cur?'':'zero'}&quot; style=&quot;height:${hgt}px&quot;></div></div>`;}).join('');
+ const ax=pts.map(p=>`<div class=&quot;xt-ycell&quot;>${p.y}</div>`).join('');
+ return `<div class=&quot;xtrend&quot;><div class=&quot;xt-title&quot;>연도별 총 부채 <span class=&quot;scl&quot;>· 공시 '총 부채(total)' 기준</span></div><div class=&quot;xt-bars&quot;>${cols}</div><div class=&quot;xt-axis&quot;>${ax}</div></div>`;
 }
 function renderDetail(){
  const recs=DEBT.filter(r=>r.tk===SEL).sort((a,b)=>a.fy.localeCompare(b.fy));
